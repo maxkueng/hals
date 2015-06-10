@@ -1,6 +1,8 @@
 hals
 ====
 
+[![Build Status](https://travis-ci.org/maxkueng/hals.svg)](https://travis-ci.org/maxkueng/hals)
+
 **hals** (is German for throat) is a concurrency limiter that has a maximum
 capacity for queued-up functions. When the capacity is reached newly added
 tasks will be dropped. New tasks will be accepted once it has capacity again.
