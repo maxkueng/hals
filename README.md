@@ -16,6 +16,12 @@ The analogy goes as follows:
  - But the mouth and throat can only hold `capacity` things. Everything else
    drops on the floor.
 
+## Install
+
+```sh
+npm install hals --save
+```
+
 ## Usage
 
 ```js
