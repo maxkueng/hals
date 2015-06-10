@@ -31,10 +31,15 @@ function drain () {
   console.log('drained');
 }
 
+function drop (usedCapacity, fn) {
+  console.log('dropped', fn.name, 'used capacity:', usedCapacity);
+}
+
 var feed = hals({
   capacity: 3,    // optional; default: null (null = unlimited capacity)
   concurrency: 1, // optional; default: 1
-  drain: drain    // optional; default null; function to be called when queue is empty
+  drain: drain,   // optional; default null; function to be called when queue is empty
+  drop: drop      // optional; default null; function to be called when a function is dropped. Receives task as first argument
 });
 
 var foods = [  
@@ -64,6 +69,7 @@ setTimeout(function () {
 prints:
 
 ```
+dropped task used capacity: 3
 ate broccoli
 ate tomato
 ate beans

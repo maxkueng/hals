@@ -31,27 +31,34 @@ describe('capacity', function () {
 
 	it('should drop functions if capacity is reached', function (done) {
 
+		var pushes = 6;
 		var capacity = 2;
 
+		var dropCounter = 0;
 		var counter = 0;
 
 		function count (next) {
-			counter += 1;
-			next();
+			setTimeout(function () {
+				counter += 1;
+				next();
+			}, 10);
 		}
 
 		var h = hals({
 			capacity: capacity,
 			drain: function () {
 				expect(counter).to.equal(capacity);
+				expect(dropCounter).to.equal(pushes - capacity);
 				done();
+			},
+			drop: function () {
+				dropCounter += 1;
 			}
 		});
 
-		h(count);
-		h(count);
-		h(count);
-		h(count);
+		for (var i = 0; i < pushes; i++) {
+			h(count);
+		}
 	});
 
 });
@@ -150,6 +157,38 @@ describe('concurrency and capacity', function () {
 		h(count);
 		h(count);
 		h(count);
+	});
+
+});
+
+describe('a lot of tasks', function () {
+
+	it('should run 100000 tasks', function (done) {
+
+		var concurrency = 2;
+
+		var pushes = 100000;
+		var counter = 0;
+		var start = +new Date();
+		var delays = {};
+
+		function count (next) {
+				counter += 1;
+				next();
+		};
+
+		var h = hals({
+			concurrency: concurrency,
+			drain: function () {
+				expect(counter).to.equal(pushes);
+				done();
+			}
+		});
+
+		for (var i = 0; i < pushes; i++) {
+			h(count);
+		}
+
 	});
 
 });
